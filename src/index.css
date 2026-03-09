@@ -74,6 +74,19 @@ body {
   gap: 5px;
 }
 
+.controls-hint {
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.controls-hint p {
+  margin: 2px 0;
+}
+
 .menu button {
   cursor: pointer;
   padding: 5px 10px;

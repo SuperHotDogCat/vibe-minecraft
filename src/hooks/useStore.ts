@@ -2,7 +2,7 @@ import { create } from 'zustand'
 import { nanoid } from 'nanoid'
 import { createNoise2D } from 'simplex-noise'
 
-export type TextureType = 'dirt' | 'grass' | 'glass' | 'wood' | 'log' | 'sword' | 'pickaxe'
+export type TextureType = 'dirt' | 'grass' | 'glass' | 'wood' | 'log' | 'sword' | 'pickaxe' | 'water' | 'iron' | 'leaves'
 
 export interface Cube {
   key: string
@@ -18,6 +18,9 @@ interface Inventory {
   log: number
   sword: number
   pickaxe: number
+  water: number
+  iron: number
+  leaves: number
 }
 
 interface State {
@@ -41,16 +44,72 @@ interface State {
 const generateTerrain = () => {
   const noise2D = createNoise2D()
   const cubes: Cube[] = []
-  const size = 10
+  const size = 15
+  const waterLevel = 3
+
   for (let x = -size; x < size; x++) {
     for (let z = -size; z < size; z++) {
-      const height = Math.floor(noise2D(x * 0.1, z * 0.1) * 3) + 1
+      const noiseValue = noise2D(x * 0.08, z * 0.08)
+      const height = Math.floor(noiseValue * 6) + 6
+
+      // Basic terrain
       for (let y = 0; y < height; y++) {
+        let texture: TextureType = 'dirt'
+        if (y === height - 1) {
+          texture = (y <= waterLevel + 1) ? 'dirt' : 'grass'
+        }
+
         cubes.push({
           key: nanoid(),
           pos: [x, y, z],
-          texture: y === height - 1 ? 'grass' : 'dirt'
+          texture
         })
+      }
+
+      // Add Sea/Water bodies
+      if (height <= waterLevel) {
+        for (let y = height; y <= waterLevel; y++) {
+          cubes.push({
+            key: nanoid(),
+            pos: [x, y, z],
+            texture: 'water'
+          })
+        }
+      }
+
+      // Random Iron ore (underground)
+      if (Math.random() < 0.1) {
+        cubes.push({
+          key: nanoid(),
+          pos: [x, Math.floor(Math.random() * 5), z],
+          texture: 'iron'
+        })
+      }
+
+      // Structures: Trees (only on grass)
+      if (x % 9 === 0 && z % 9 === 0 && height > waterLevel + 1 && Math.random() > 0.4) {
+        // Trunk
+        for (let h = 0; h < 4; h++) {
+          cubes.push({
+            key: nanoid(),
+            pos: [x, height + h, z],
+            texture: 'log'
+          })
+        }
+        // Leaves
+        for (let lx = -2; lx <= 2; lx++) {
+          for (let lz = -2; lz <= 2; lz++) {
+            for (let ly = 0; ly <= 2; ly++) {
+              if (Math.abs(lx) + Math.abs(lz) + Math.abs(ly) > 3) continue
+              if (lx === 0 && lz === 0 && ly < 2) continue
+              cubes.push({
+                key: nanoid(),
+                pos: [x + lx, height + 3 + ly, z + lz],
+                texture: 'leaves'
+              })
+            }
+          }
+        }
       }
     }
   }
@@ -78,6 +137,9 @@ export const useStore = create<State>((set) => ({
     log: 10,
     sword: 1,
     pickaxe: 1,
+    water: 0,
+    iron: 0,
+    leaves: 0,
   },
   health: 20,
   hunger: 20,
@@ -113,12 +175,16 @@ export const useStore = create<State>((set) => ({
       return prev
     })
   },
-  resetWorld: () => set(() => ({
-    cubes: generateTerrain(),
-    inventory: { dirt: 10, grass: 10, glass: 10, wood: 10, log: 10, sword: 1, pickaxe: 1 },
-    health: 20,
-    hunger: 20
-  })),
+  resetWorld: () => set(() => {
+    const cubes = generateTerrain()
+    setLocalStorage('cubes', cubes)
+    return {
+      cubes,
+      inventory: { dirt: 10, grass: 10, glass: 10, wood: 10, log: 10, sword: 1, pickaxe: 1, water: 0, iron: 0, leaves: 0 },
+      health: 20,
+      hunger: 20
+    }
+  }),
   craftWood: () => {
     set((prev) => {
       if (prev.inventory.log >= 1) {

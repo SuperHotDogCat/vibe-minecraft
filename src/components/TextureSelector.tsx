@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useStore } from '../hooks/useStore'
 import { useKeyboard } from '../hooks/useKeyboard'
-import { dirtImg, grassImg, glassImg, woodImg, logImg } from '../images/images'
+import { dirtImg, grassImg, glassImg, woodImg, logImg, waterImg, ironImg, leavesImg } from '../images/images'
 
 const swordImg = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAD9JREFUOE9jZKAQMFKon2HUAKIBpBvAsAFEA0g3gGEDiAaQbgDDBhANIA0Nhg0gGkAaGgwbeDDAyDj6AwMDAC97EAs9p9GBAAAAAElFTkSuQmCC' // Simple grey pixel for sword
 const pickaxeImg = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAD9JREFUOE9jZKAQMFKon2HUAKIBpBvAsAFEA0g3gGEDiAaQbgDDBhANIA0Nhg0gGkAaGgwbeDDAyDj6AwMDAC97EAs9p9GBAAAAAElFTkSuQmCC' // Same for pickaxe for now
@@ -14,6 +14,9 @@ const images = {
   log: logImg,
   sword: swordImg,
   pickaxe: pickaxeImg,
+  water: waterImg,
+  iron: ironImg,
+  leaves: leavesImg,
 }
 
 export const TextureSelector = () => {
@@ -21,15 +24,15 @@ export const TextureSelector = () => {
   const setTexture = useStore((state) => state.setTexture)
   const inventory = useStore((state) => state.inventory)
 
-  const { dirt, grass, glass, wood, log, sword, pickaxe } = useKeyboard()
+  const { dirt, grass, glass, wood, log, sword, pickaxe, water, iron, leaves } = useKeyboard()
 
   useEffect(() => {
-    const textures = { dirt, grass, glass, wood, log, sword, pickaxe }
+    const textures = { dirt, grass, glass, wood, log, sword, pickaxe, water, iron, leaves }
     const pressedTexture = Object.entries(textures).find(([_, v]) => (v as boolean))
     if (pressedTexture) {
       setTexture(pressedTexture[0] as any)
     }
-  }, [dirt, grass, glass, wood, log, sword, pickaxe, setTexture])
+  }, [dirt, grass, glass, wood, log, sword, pickaxe, water, iron, leaves, setTexture])
 
   return (
     <div className="absolute centered texture-selector">

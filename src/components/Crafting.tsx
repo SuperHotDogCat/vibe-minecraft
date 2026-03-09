@@ -23,10 +23,12 @@ export const Crafting = () => {
       <h2>Crafting (Press E to close)</h2>
       <div className="inventory-display">
         <p>Log: {inventory.log}</p>
-        <p>Wood: {inventory.wood}</p>
+        <p>Planks: {inventory.wood}</p>
+        <p>Iron: {inventory.iron}</p>
+        <p>Leaves: {inventory.leaves}</p>
         <p>Dirt: {inventory.dirt}</p>
         <p>Grass: {inventory.grass}</p>
-        <p>Glass: {inventory.glass}</p>
+        <p>Water: {inventory.water}</p>
       </div>
       <div className="recipes">
         <button

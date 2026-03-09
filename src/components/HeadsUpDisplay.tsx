@@ -25,6 +25,11 @@ export const HeadsUpDisplay = () => {
           <div className="progress" style={{ width: `${(hunger / 20) * 100}%`, backgroundColor: 'orange' }}></div>
         </div>
       </div>
+      <div className="controls-hint">
+        <p>Left Click: Break | Right Click: Place</p>
+        <p>1-5: Blocks | 6: Sword | 7: Pickaxe</p>
+        <p>E: Crafting | WASD: Move | Space: Jump</p>
+      </div>
     </div>
   )
 }
