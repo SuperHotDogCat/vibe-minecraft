@@ -1,0 +1,62 @@
+body {
+  margin: 0;
+  overflow: hidden;
+}
+
+#root {
+  width: 100vw;
+  height: 100vh;
+}
+
+.absolute {
+  position: absolute;
+}
+
+.centered {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.cursor {
+  color: white;
+  font-size: 2rem;
+  pointer-events: none;
+}
+
+.texture-selector {
+  display: flex;
+  bottom: 20px;
+  top: auto;
+  gap: 10px;
+}
+
+.texture-selector img {
+  width: 50px;
+  height: 50px;
+  border: 5px solid transparent;
+}
+
+.texture-selector img.active {
+  border: 5px solid red;
+}
+
+.menu {
+  top: 10px;
+  left: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.menu button {
+  cursor: pointer;
+  padding: 5px 10px;
+  background-color: #333;
+  color: white;
+  border: none;
+}
+
+.menu button:hover {
+  background-color: #555;
+}
