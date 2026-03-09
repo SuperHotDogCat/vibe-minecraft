@@ -8,6 +8,8 @@ import { Cubes } from './components/Cubes'
 import { TextureSelector } from './components/TextureSelector'
 import { Crafting } from './components/Crafting'
 import { Mob } from './components/Mob'
+import { HeadsUpDisplay } from './components/HeadsUpDisplay'
+import { Hand } from './components/Hand'
 import { useStore } from './hooks/useStore'
 
 function App() {
@@ -22,6 +24,7 @@ function App() {
         <FPV />
         <Physics>
           <Player />
+          <Hand />
           <Cubes />
           <Mob position={[10, 1, 10]} />
           <Ground />
@@ -30,6 +33,7 @@ function App() {
       <div className="absolute centered cursor">+</div>
       <TextureSelector />
       <Crafting />
+      <HeadsUpDisplay />
       <div className="menu absolute">
         <button onClick={() => saveWorld()}>Save</button>
         <button onClick={() => resetWorld()}>Reset</button>

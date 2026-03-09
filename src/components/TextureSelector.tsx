@@ -1,7 +1,10 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useStore } from '../hooks/useStore'
 import { useKeyboard } from '../hooks/useKeyboard'
 import { dirtImg, grassImg, glassImg, woodImg, logImg } from '../images/images'
+
+const swordImg = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAD9JREFUOE9jZKAQMFKon2HUAKIBpBvAsAFEA0g3gGEDiAaQbgDDBhANIA0Nhg0gGkAaGgwbeDDAyDj6AwMDAC97EAs9p9GBAAAAAElFTkSuQmCC' // Simple grey pixel for sword
+const pickaxeImg = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAD9JREFUOE9jZKAQMFKon2HUAKIBpBvAsAFEA0g3gGEDiAaQbgDDBhANIA0Nhg0gGkAaGgwbeDDAyDj6AwMDAC97EAs9p9GBAAAAAElFTkSuQmCC' // Same for pickaxe for now
 
 const images = {
   dirt: dirtImg,
@@ -9,45 +12,43 @@ const images = {
   glass: glassImg,
   wood: woodImg,
   log: logImg,
+  sword: swordImg,
+  pickaxe: pickaxeImg,
 }
 
 export const TextureSelector = () => {
-  const [visible, setVisible] = useState(false)
   const activeTexture = useStore((state) => state.texture)
   const setTexture = useStore((state) => state.setTexture)
+  const inventory = useStore((state) => state.inventory)
 
-  const { dirt, grass, glass, wood, log } = useKeyboard()
+  const { dirt, grass, glass, wood, log, sword, pickaxe } = useKeyboard()
 
   useEffect(() => {
-    const textures = { dirt, grass, glass, wood, log }
-    const pressedTexture = Object.entries(textures).find(([_, v]) => v)
+    const textures = { dirt, grass, glass, wood, log, sword, pickaxe }
+    const pressedTexture = Object.entries(textures).find(([_, v]) => (v as boolean))
     if (pressedTexture) {
       setTexture(pressedTexture[0] as any)
     }
-  }, [dirt, grass, glass, wood, log, setTexture])
-
-  useEffect(() => {
-    setVisible(true)
-    const visibilityTimeout = setTimeout(() => {
-      setVisible(false)
-    }, 2000)
-    return () => {
-      clearTimeout(visibilityTimeout)
-    }
-  }, [activeTexture])
-
-  if (!visible) return null
+  }, [dirt, grass, glass, wood, log, sword, pickaxe, setTexture])
 
   return (
     <div className="absolute centered texture-selector">
       {Object.entries(images).map(([k, src]) => {
+        const count = inventory[k as keyof typeof inventory]
+        const isTool = k === 'sword' || k === 'pickaxe'
+
         return (
-          <img
+          <div
             key={k}
-            src={src}
-            alt={k}
-            className={`${k === activeTexture ? 'active' : ''}`}
-          />
+            className={`texture-slot ${k === activeTexture ? 'active' : ''}`}
+            onClick={() => setTexture(k as any)}
+          >
+            <img
+              src={src}
+              alt={k}
+            />
+            {!isTool && <span className="texture-count">{count}</span>}
+          </div>
         )
       })}
     </div>

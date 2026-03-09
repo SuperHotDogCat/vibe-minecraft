@@ -16,10 +16,14 @@ export const Ground = () => {
   groundTexture.wrapT = RepeatWrapping
   groundTexture.repeat.set(100, 100)
 
+  const activeItem = useStore((state) => state.activeItem)
+
   return (
     <mesh
-      onClick={(e) => {
+      onPointerDown={(e) => {
         e.stopPropagation()
+        if (e.button !== 2) return // Right click only for ground
+        if (activeItem === 'sword' || activeItem === 'pickaxe') return
         const [x, y, z] = Object.values(e.point).map((val) => Math.round(val))
         addCube(x, y, z)
       }}
