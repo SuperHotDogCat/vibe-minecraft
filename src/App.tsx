@@ -6,6 +6,8 @@ import { Player } from './components/Player'
 import { FPV } from './components/FPV'
 import { Cubes } from './components/Cubes'
 import { TextureSelector } from './components/TextureSelector'
+import { Crafting } from './components/Crafting'
+import { Mob } from './components/Mob'
 import { useStore } from './hooks/useStore'
 
 function App() {
@@ -21,11 +23,13 @@ function App() {
         <Physics>
           <Player />
           <Cubes />
+          <Mob position={[10, 1, 10]} />
           <Ground />
         </Physics>
       </Canvas>
       <div className="absolute centered cursor">+</div>
       <TextureSelector />
+      <Crafting />
       <div className="menu absolute">
         <button onClick={() => saveWorld()}>Save</button>
         <button onClick={() => resetWorld()}>Reset</button>
