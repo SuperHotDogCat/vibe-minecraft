@@ -26,25 +26,28 @@ const HandModel = ({ activeItem }: { activeItem: string }) => {
     return () => window.removeEventListener('mousedown', handleMouseDown)
   }, [])
 
-  useFrame((state, delta) => {
+  useFrame((_, delta) => {
     if (meshRef.current) {
       meshRef.current.position.copy(camera.position)
       meshRef.current.rotation.copy(camera.rotation)
       meshRef.current.updateMatrix()
 
-      meshRef.current.translateZ(-0.5)
-      meshRef.current.translateX(0.3)
-      meshRef.current.translateY(-0.3)
+      meshRef.current.translateZ(-0.4)
+      meshRef.current.translateX(0.4)
+      meshRef.current.translateY(-0.4)
 
       if (isSwinging) {
-        swingTime.current += delta * 10
+        swingTime.current += delta * 15
         if (swingTime.current > Math.PI) {
           setIsSwinging(false)
           swingTime.current = 0
         }
-        meshRef.current.rotation.x -= Math.sin(swingTime.current) * 0.8
+        meshRef.current.rotation.x -= Math.sin(swingTime.current) * 1.2
+        meshRef.current.rotation.y += Math.sin(swingTime.current) * 0.5
       } else {
-        meshRef.current.rotation.x += 0.5
+        meshRef.current.rotation.x = camera.rotation.x + 0.4
+        meshRef.current.rotation.y = camera.rotation.y - 0.2
+        meshRef.current.rotation.z = camera.rotation.z + 0.2
       }
     }
   })
@@ -56,8 +59,8 @@ const HandModel = ({ activeItem }: { activeItem: string }) => {
     <mesh ref={meshRef} matrixAutoUpdate={false}>
       {activeItem === 'sword' || activeItem === 'pickaxe' ? (
         <>
-          <boxGeometry args={[0.05, 0.4, 0.05]} />
-          <meshStandardMaterial color={activeItem === 'sword' ? '#d1d1d1' : '#7d7d7d'} />
+          <planeGeometry args={[0.3, 0.3]} />
+          <meshStandardMaterial map={texture} transparent={true} />
         </>
       ) : (
         <>

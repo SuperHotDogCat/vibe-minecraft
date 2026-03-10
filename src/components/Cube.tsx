@@ -54,8 +54,8 @@ export const Cube = ({ position, texture }: CubeProps) => {
       <meshStandardMaterial
         color={isHovered ? 'grey' : 'white'}
         map={activeTexture}
-        transparent={texture === 'glass'}
-        opacity={texture === 'glass' ? 0.6 : 1}
+        transparent={texture === 'glass' || texture === 'water'}
+        opacity={texture === 'glass' ? 0.6 : texture === 'water' ? 0.8 : 1}
         attach="material"
       />
     </mesh>

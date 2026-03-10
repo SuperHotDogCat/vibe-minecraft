@@ -1,10 +1,7 @@
 import { useEffect } from 'react'
 import { useStore } from '../hooks/useStore'
 import { useKeyboard } from '../hooks/useKeyboard'
-import { dirtImg, grassImg, glassImg, woodImg, logImg, waterImg, ironImg, leavesImg } from '../images/images'
-
-const swordImg = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAD9JREFUOE9jZKAQMFKon2HUAKIBpBvAsAFEA0g3gGEDiAaQbgDDBhANIA0Nhg0gGkAaGgwbeDDAyDj6AwMDAC97EAs9p9GBAAAAAElFTkSuQmCC' // Simple grey pixel for sword
-const pickaxeImg = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAD9JREFUOE9jZKAQMFKon2HUAKIBpBvAsAFEA0g3gGEDiAaQbgDDBhANIA0Nhg0gGkAaGgwbeDDAyDj6AwMDAC97EAs9p9GBAAAAAElFTkSuQmCC' // Same for pickaxe for now
+import { dirtImg, grassImg, glassImg, woodImg, logImg, waterImg, ironImg, leavesImg, swordImg, pickaxeImg } from '../images/images'
 
 const images = {
   dirt: dirtImg,
