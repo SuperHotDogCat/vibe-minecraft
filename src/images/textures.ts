@@ -11,6 +11,8 @@ import {
   leavesImg,
   swordImg,
   pickaxeImg,
+  zombieImg,
+  villagerImg,
 } from './images'
 
 const dirtTexture = new TextureLoader().load(dirtImg)
@@ -24,6 +26,8 @@ const ironTexture = new TextureLoader().load(ironImg)
 const leavesTexture = new TextureLoader().load(leavesImg)
 const swordTexture = new TextureLoader().load(swordImg)
 const pickaxeTexture = new TextureLoader().load(pickaxeImg)
+const zombieTexture = new TextureLoader().load(zombieImg)
+const villagerTexture = new TextureLoader().load(villagerImg)
 
 dirtTexture.magFilter = NearestFilter
 grassTexture.magFilter = NearestFilter
@@ -36,6 +40,8 @@ ironTexture.magFilter = NearestFilter
 leavesTexture.magFilter = NearestFilter
 swordTexture.magFilter = NearestFilter
 pickaxeTexture.magFilter = NearestFilter
+zombieTexture.magFilter = NearestFilter
+villagerTexture.magFilter = NearestFilter
 
 export {
   dirtTexture,
@@ -49,4 +55,6 @@ export {
   leavesTexture,
   swordTexture,
   pickaxeTexture,
+  zombieTexture,
+  villagerTexture,
 }

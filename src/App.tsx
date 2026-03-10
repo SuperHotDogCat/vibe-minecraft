@@ -8,7 +8,7 @@ import { FPV } from './components/FPV'
 import { Cubes } from './components/Cubes'
 import { TextureSelector } from './components/TextureSelector'
 import { Crafting } from './components/Crafting'
-import { Mob } from './components/Mob'
+import { Mobs } from './components/Mobs'
 import { HeadsUpDisplay } from './components/HeadsUpDisplay'
 import { Hand } from './components/Hand'
 import { useStore } from './hooks/useStore'
@@ -19,16 +19,17 @@ function App() {
 
   return (
     <>
-      <Canvas>
-        <Sky sunPosition={[100, 100, 20]} />
-        <ambientLight intensity={0.5} />
+      <Canvas shadows>
+        <Sky sunPosition={[100, 20, 20]} />
+        <ambientLight intensity={1.5} />
+        <directionalLight position={[100, 100, 50]} intensity={1.5} castShadow />
         <FPV />
         <Suspense fallback={null}>
           <Physics>
             <Player />
             <Hand />
             <Cubes />
-            <Mob position={[10, 1, 10]} />
+            <Mobs />
             <Ground />
           </Physics>
         </Suspense>

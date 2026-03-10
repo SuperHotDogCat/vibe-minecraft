@@ -4,6 +4,14 @@ import { createNoise2D } from 'simplex-noise'
 
 export type TextureType = 'dirt' | 'grass' | 'glass' | 'wood' | 'log' | 'sword' | 'pickaxe' | 'water' | 'iron' | 'leaves'
 
+export type MobType = 'zombie' | 'villager'
+
+export interface MobEntity {
+  id: string
+  pos: [number, number, number]
+  type: MobType
+}
+
 export interface Cube {
   key: string
   pos: [number, number, number]
@@ -26,6 +34,7 @@ interface Inventory {
 interface State {
   texture: TextureType
   cubes: Cube[]
+  mobs: MobEntity[]
   inventory: Inventory
   health: number
   hunger: number
@@ -111,6 +120,37 @@ const generateTerrain = () => {
           }
         }
       }
+
+      // Village: Small house (very simple)
+      if (x % 12 === 0 && z % 12 === 0 && height > waterLevel + 1 && Math.random() > 0.3) {
+        // Floor
+        for (let fx = 0; fx < 5; fx++) {
+          for (let fz = 0; fz < 5; fz++) {
+             cubes.push({ key: nanoid(), pos: [x + fx, height - 1, z + fz], texture: 'wood' })
+          }
+        }
+        // Walls
+        for (let wy = 0; wy < 3; wy++) {
+          for (let wx = 0; wx < 5; wx++) {
+            cubes.push({ key: nanoid(), pos: [x + wx, height + wy, z], texture: 'wood' })
+            cubes.push({ key: nanoid(), pos: [x + wx, height + wy, z + 4], texture: 'wood' })
+          }
+          for (let wz = 1; wz < 4; wz++) {
+            cubes.push({ key: nanoid(), pos: [x, height + wy, z + wz], texture: 'wood' })
+            cubes.push({ key: nanoid(), pos: [x + 4, height + wy, z + wz], texture: 'wood' })
+          }
+        }
+        // Windows (glass)
+        cubes.push({ key: nanoid(), pos: [x + 2, height + 1, z], texture: 'glass' })
+        cubes.push({ key: nanoid(), pos: [x + 2, height + 1, z + 4], texture: 'glass' })
+
+        // Roof
+        for (let rx = 0; rx < 5; rx++) {
+          for (let rz = 0; rz < 5; rz++) {
+            cubes.push({ key: nanoid(), pos: [x + rx, height + 3, z + rz], texture: 'log' })
+          }
+        }
+      }
     }
   }
   return cubes
@@ -129,6 +169,11 @@ const setLocalStorage = (key: string, value: any) => {
 export const useStore = create<State>((set) => ({
   texture: 'dirt',
   cubes: getLocalStorage('cubes') || generateTerrain(),
+  mobs: [
+    { id: nanoid(), pos: [10, 10, 10], type: 'zombie' },
+    { id: nanoid(), pos: [-10, 10, -10], type: 'villager' },
+    { id: nanoid(), pos: [5, 10, 5], type: 'villager' },
+  ],
   inventory: getLocalStorage('inventory') || {
     dirt: 10,
     grass: 10,
